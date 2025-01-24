@@ -80,7 +80,7 @@ function onSpin() {
     $("#result-modal").modal();
     choosenHistory.push(theChoosen);
 
-    // sendMail(theChoosen);
+    sendMail(theChoosen);
   }, 11000);
 }
 function getTheChoosen(deg) {
