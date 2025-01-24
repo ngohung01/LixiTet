@@ -30,6 +30,16 @@ var items = [
 var theChoosenIndex;
 var choosenHistory = [];
 
+let userName = "";
+
+window.onload = function () {
+  userName = prompt("Vui lòng nhập tên của bạn:");
+  if (!userName) {
+    alert("Bạn phải nhập tên để tiếp tục!");
+    window.location.reload();
+  }
+};
+
 init();
 
 function init() {
@@ -63,7 +73,6 @@ function init() {
   }
 }
 function onSpin() {
-  const name = prompt("Your Name");
   currentDeg = currentDeg + Math.floor(Math.random() * 360 + 360 * 20);
   $("#wheel").css({
     transform: "rotate(" + currentDeg + "deg)",
@@ -81,7 +90,7 @@ function onSpin() {
     $("#result-modal").modal();
     choosenHistory.push(theChoosen);
 
-    sendMail(name, theChoosen);
+    sendMail(userName, theChoosen);
   }, 11000);
 }
 function getTheChoosen(deg) {
