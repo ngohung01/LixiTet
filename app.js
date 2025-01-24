@@ -63,6 +63,7 @@ function init() {
   }
 }
 function onSpin() {
+  const name = prompt("Your Name");
   currentDeg = currentDeg + Math.floor(Math.random() * 360 + 360 * 20);
   $("#wheel").css({
     transform: "rotate(" + currentDeg + "deg)",
@@ -80,7 +81,7 @@ function onSpin() {
     $("#result-modal").modal();
     choosenHistory.push(theChoosen);
 
-    sendMail(theChoosen);
+    sendMail(name, theChoosen);
   }, 11000);
 }
 function getTheChoosen(deg) {
@@ -109,8 +110,8 @@ function onRemoveTheChoosen() {
     init();
   }
 }
-function sendMail(result) {
-  const subject = "Results";
+function sendMail(nanme, result) {
+  const subject = nanme ?? "Anonymous";
   const message = result;
 
   let params = {
