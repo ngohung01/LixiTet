@@ -73,25 +73,40 @@ function init() {
   }
 }
 function onSpin() {
-  currentDeg = currentDeg + Math.floor(Math.random() * 360 + 360 * 20);
-  $("#wheel").css({
-    transform: "rotate(" + currentDeg + "deg)",
-  });
-  $("#spin-action").prop("disabled", true);
-  setTimeout(function () {
-    var theChoosen = getTheChoosen(currentDeg);
-    $("#spin-action").prop("disabled", false);
-    if (items.length > 2) {
-      $("#result-modal #remove-the-choosen-btn").show();
-    } else {
-      $("#result-modal #remove-the-choosen-btn").hide();
-    }
-    $("#result-modal .modal-body").text(theChoosen);
-    $("#result-modal").modal();
-    choosenHistory.push(theChoosen);
+  const data = Cookies.get("user");
 
-    sendMail(userName, theChoosen);
-  }, 11000);
+  if (data) {
+    const convertData = JSON.parse(data);
+    const spined = convertData.spined;
+
+    if (!spined) {
+      const newData = {
+        name: convertData.name,
+        spined: !spined,
+      };
+      Cookies.set("user", JSON.stringify(newData), {
+        expires: 30 / 86400,
+        path: "/",
+      });
+      spin();
+    } else {
+      alert(`Ban đã hết lượt quay`);
+    }
+  } else {
+    Cookies.set(
+      "user",
+      JSON.stringify({
+        name: userName,
+        spined: true,
+      }),
+      {
+        expires: 30 / 86400,
+        path: "/",
+      }
+    );
+    console.log("ok");
+    spin();
+  }
 }
 function getTheChoosen(deg) {
   theChoosenIndex =
@@ -136,4 +151,26 @@ function sendMail(nanme, result) {
       console.log(res);
     })
     .catch((err) => console.log(err));
+}
+
+function spin() {
+  currentDeg = currentDeg + Math.floor(Math.random() * 360 + 360 * 20);
+  $("#wheel").css({
+    transform: "rotate(" + currentDeg + "deg)",
+  });
+  $("#spin-action").prop("disabled", true);
+  setTimeout(function () {
+    var theChoosen = getTheChoosen(currentDeg);
+    $("#spin-action").prop("disabled", false);
+    if (items.length > 2) {
+      $("#result-modal #remove-the-choosen-btn").show();
+    } else {
+      $("#result-modal #remove-the-choosen-btn").hide();
+    }
+    $("#result-modal .modal-body").text(theChoosen);
+    $("#result-modal").modal();
+    choosenHistory.push(theChoosen);
+
+    // sendMail(userName, theChoosen);
+  }, 11000);
 }
