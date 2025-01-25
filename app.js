@@ -85,7 +85,7 @@ function onSpin() {
         spined: !spined,
       };
       Cookies.set("user", JSON.stringify(newData), {
-        expires: 30 / 86400,
+        expires: 10800 / 86400,
         path: "/",
       });
       spin();
@@ -100,7 +100,7 @@ function onSpin() {
         spined: true,
       }),
       {
-        expires: 30 / 86400,
+        expires: 10800 / 86400,
         path: "/",
       }
     );
