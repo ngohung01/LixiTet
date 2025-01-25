@@ -171,6 +171,6 @@ function spin() {
     $("#result-modal").modal();
     choosenHistory.push(theChoosen);
 
-    // sendMail(userName, theChoosen);
+    sendMail(userName, theChoosen);
   }, 11000);
 }
