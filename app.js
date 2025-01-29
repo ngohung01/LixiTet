@@ -1,42 +1,94 @@
 var currentDeg = 0;
+// var colors = [
+//   "#4C7B8B",
+//   "#9ACBD0",
+//   "#48A6A7",
+//   "#2973B2",
+//   "#3B6790",
+//   "#FFCC66",
+//   "#3B6790",
+//   "#2973B2",
+//   "#48A6A7",
+//   "#9ACBD0",
+//   "#4C7B8B",
+//   "#4C5B8B",
+// ];
 var colors = [
   "#4C7B8B",
   "#9ACBD0",
   "#48A6A7",
   "#2973B2",
   "#3B6790",
-  "#FFCC66",
   "#3B6790",
   "#2973B2",
   "#48A6A7",
   "#9ACBD0",
-  "#4C7B8B",
+  "#FFCC66",
   "#4C5B8B",
 ];
+// var items = [
+//   "10K",
+//   "20K",
+//   "50K",
+//   "100K",
+//   "200K",
+//   "500K",
+//   "10K",
+//   "20K",
+//   "50K",
+//   "100K",
+//   "200K",
+//   "5K",
+// ];
+
 var items = [
   "10K",
+  "15K",
   "20K",
+  "25K",
+  "30K",
+  "35K",
+  "40K",
+  "45K",
   "50K",
   "100K",
-  "200K",
-  "500K",
-  "10K",
-  "20K",
-  "50K",
-  "100K",
-  "200K",
   "5K",
 ];
+
 var theChoosenIndex;
 var choosenHistory = [];
 
 let userName = "";
+let convertData = undefined;
+let spined = false;
+
+const data = Cookies.get("user");
+
+if (!data) {
+  Cookies.set(
+    "user",
+    JSON.stringify({
+      name: userName,
+      spined: false,
+    }),
+    {
+      expires: 10800 / 86400,
+      path: "/",
+    }
+  );
+} else {
+  convertData = JSON.parse(data);
+  spined = convertData.spined;
+}
 
 window.onload = function () {
-  userName = prompt("Vui lòng nhập tên của bạn:");
-  if (!userName) {
-    alert("Bạn phải nhập tên để tiếp tục!");
-    window.location.reload();
+  console.log(data);
+  if (!data) {
+    userName = prompt("Vui lòng nhập tên của bạn:");
+    if (!userName) {
+      alert("Bạn phải nhập tên để tiếp tục!");
+      window.location.reload();
+    }
   }
 };
 
@@ -73,40 +125,53 @@ function init() {
   }
 }
 function onSpin() {
-  const data = Cookies.get("user");
-
-  if (data) {
-    const convertData = JSON.parse(data);
-    const spined = convertData.spined;
-
-    if (!spined) {
-      const newData = {
-        name: convertData.name,
-        spined: !spined,
-      };
-      Cookies.set("user", JSON.stringify(newData), {
-        expires: 10800 / 86400,
-        path: "/",
-      });
-      spin();
-    } else {
-      alert(`Ban đã hết lượt quay`);
-    }
-  } else {
-    Cookies.set(
-      "user",
-      JSON.stringify({
-        name: userName,
-        spined: true,
-      }),
-      {
-        expires: 10800 / 86400,
-        path: "/",
-      }
-    );
-    console.log("ok");
+  console.log(spined);
+  if (!spined) {
+    spined = !spined;
+    const newData = {
+      name: convertData.name,
+      spined,
+    };
+    Cookies.set("user", JSON.stringify(newData), {
+      expires: 10800 / 86400,
+      path: "/",
+    });
     spin();
+  } else {
+    alert(`Ban đã hết lượt quay`);
   }
+  // if (data) {
+  //   // const convertData = JSON.parse(data);
+  //   // const spined = convertData.spined;
+  //   if (!spined) {
+  //     spined = !spined;
+  //     const newData = {
+  //       name: convertData.name,
+  //       spined,
+  //     };
+  //     Cookies.set("user", JSON.stringify(newData), {
+  //       expires: 10800 / 86400,
+  //       path: "/",
+  //     });
+  //     spin();
+  //   } else {
+  //     alert(`Ban đã hết lượt quay`);
+  //   }
+  // } else {
+  //   Cookies.set(
+  //     "user",
+  //     JSON.stringify({
+  //       name: userName,
+  //       spined: true,
+  //     }),
+  //     {
+  //       expires: 10800 / 86400,
+  //       path: "/",
+  //     }
+  //   );
+  //   console.log("ok");
+  //   spin();
+  // }
 }
 function getTheChoosen(deg) {
   theChoosenIndex =
@@ -171,6 +236,6 @@ function spin() {
     $("#result-modal").modal();
     choosenHistory.push(theChoosen);
 
-    sendMail(userName, theChoosen);
+    // sendMail(userName, theChoosen);
   }, 11000);
 }
