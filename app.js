@@ -63,8 +63,10 @@ let convertData = undefined;
 let spined = false;
 
 const data = Cookies.get("user");
-
+const checkData = data;
+console.log(data);
 if (!data) {
+  console.log(false);
   Cookies.set(
     "user",
     JSON.stringify({
@@ -79,11 +81,11 @@ if (!data) {
 } else {
   convertData = JSON.parse(data);
   spined = convertData.spined;
+  userName = convertData.name;
 }
 
 window.onload = function () {
-  console.log(data);
-  if (!data) {
+  if (!userName) {
     userName = prompt("Vui lòng nhập tên của bạn:");
     if (!userName) {
       alert("Bạn phải nhập tên để tiếp tục!");
@@ -129,7 +131,7 @@ function onSpin() {
   if (!spined) {
     spined = !spined;
     const newData = {
-      name: convertData.name,
+      name: userName,
       spined,
     };
     Cookies.set("user", JSON.stringify(newData), {
